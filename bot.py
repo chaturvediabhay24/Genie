@@ -60,7 +60,7 @@ def chat_with_assistant():
                                                                "role": "tool", 
                                                                "name": tool_name, 
                                                                "content": str(tool_result)})
-                message = chat_completion(conversation, tools=tool_descriptions)
+                message = chat_completion(conversation, tools=tool_descriptions, model=cfg.model)
 
                 if message.content:
                     assistant_message = message.content
