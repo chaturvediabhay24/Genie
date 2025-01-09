@@ -1,0 +1,1 @@
+from .newsAPI_dot_org import NewsAPI

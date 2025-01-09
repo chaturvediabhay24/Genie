@@ -1,6 +1,11 @@
+from datetime import datetime
+
 import yfinance as yf
 
+from .news import NewsAPI
 from .report_model import StockReport
+
+newsAPI = NewsAPI()
 
 class Report:
     def __init__(self, ticker):
@@ -58,11 +63,24 @@ class Report:
         report.economicIndicators.governmentPolicies.gstRate = 0 # Need to check the gst rate
         report.economicIndicators.governmentPolicies.corporateTaxRate = 0 # Need to check the corporate tax rate
 
-        report.newsAndUpdates = [] # Need to check the news and updates
+        report.newsAndUpdates = self.getNewsUpdates() # Need to check the news and updates
 
         report.analystRatings = [] # Need to check the analyst ratings
 
         report.peerComparison = [] # Need to check the peer comparison
+
+    def getNewsUpdates(self):
+        company_name = self.info['shortName']
+        everything = newsAPI.fetch_everything(**{
+            "q": f"{company_name}, {self.ticker_name}, Indian stock market, National Stock Exchange, Bombay Stock Exchange",
+            "language": "en",
+            "from": "2025-01-09",
+            "to": datetime.now().strftime("%Y-%m-%d"),
+            "sortBy": "publishedAt",
+            "pageSize": 5
+            })
+        
+        everything_articles = everything.get("articles", [])
         
 
 
